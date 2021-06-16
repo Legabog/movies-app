@@ -14,7 +14,7 @@ const App = () => {
   const [moviesData, setMoviesData] = useState([]);
   const [isFetching, setFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limitElements] = useState(25);
+  const [limitElements] = useState(24);
 
   useEffect(() => {
     const getData = () => {

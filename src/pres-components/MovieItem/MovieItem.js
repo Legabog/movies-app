@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useInput } from "../../hooks/useInput";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import rate from "../../assets/logos/logo-imdb.svg";
 import { Comment } from "../Comment";
@@ -12,6 +12,8 @@ const Wrapper = styled.div`
   justify-content: center;
   margin-top: 30px;
   margin-left: 70px;
+
+  ${(props) => (props.adaptive ? props.adaptive : null)}
 `;
 
 const SecondWrapper = styled.div`
@@ -132,6 +134,79 @@ const InputButton = styled.button`
   }
 `;
 
+const adaptive = css`
+  @media only screen and (max-width: 470px) {
+    & {
+      max-width: 350px;
+      padding-left: 40px;
+      margin-left: 0px;
+    }
+    ${FilmPart} {
+      width: 170px;
+      height: 250px;
+    }
+    ${Image} {
+      width: 170px;
+      height: 250px;
+    }
+    ${CommentsPart} {
+      height: 250px;
+    }
+    ${CommentsContainer} {
+      height: 150px;
+    }
+  }
+  @media only screen and (max-width: 420px) {
+    & {
+      max-width: 340px;
+      padding-left: 30px;
+      margin-left: 0px;
+    }
+  }
+  @media only screen and (max-width: 390px) {
+    & {
+      max-width: 300px;
+    }
+    ${FilmPart} {
+      width: 150px;
+      height: 220px;
+    }
+    ${Image} {
+      width: 150px;
+      height: 220px;
+    }
+    ${CommentsPart} {
+      height: 220px;
+    }
+    ${CommentsContainer} {
+      height: 120px;
+    }
+  }
+  @media only screen and (max-width: 330px) {
+    & {
+      max-width: 250px;
+      padding-left: 30px;
+    }
+    ${FilmPart} {
+      width: 125px;
+      height: 200px;
+    }
+    ${Image} {
+      width: 125px;
+      height: 200px;
+    }
+    ${CommentsPart} {
+      height: 200px;
+    }
+    ${CommentsContainer} {
+      height: 100px;
+    }
+  }
+  @media only screen and (max-width: 290px) {
+    padding-left: 20px;
+  }
+`;
+
 export const MovieItem = ({ movieData }) => {
   const [commnets, setComments] = useState([
     "Awesome film!",
@@ -167,8 +242,15 @@ export const MovieItem = ({ movieData }) => {
     }
   };
 
+  const getGenres = () =>
+    movieData.genres !== undefined
+      ? movieData.genres.map((e, index) =>
+          index === movieData.genres.length - 1 ? e : `${e}, `
+        )
+      : null;
+
   return (
-    <Wrapper>
+    <Wrapper adaptive={adaptive}>
       <SecondWrapper>
         <FilmPart>
           <Image src={movieData.medium_cover_image} />
@@ -200,10 +282,7 @@ export const MovieItem = ({ movieData }) => {
               onKeyDown={keydownClickHandler}
             />
           </CommentsInput>
-          <InputButton
-            disabled={inputValue.length ? false : true}
-            onClick={clickHandler}
-          >
+          <InputButton disabled={!inputValue.length} onClick={clickHandler}>
             Send
           </InputButton>
         </CommentsPart>
@@ -215,13 +294,7 @@ export const MovieItem = ({ movieData }) => {
       <Title>
         {movieData.title_english} · {movieData.year}
       </Title>
-      <Description>
-        {movieData.genres !== undefined
-          ? movieData.genres.map((e, index) =>
-              index === movieData.genres.length - 1 ? e : `${e}, `
-            )
-          : null}
-      </Description>
+      <Description>{getGenres()}</Description>
     </Wrapper>
   );
 };

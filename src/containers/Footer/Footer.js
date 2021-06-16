@@ -1,5 +1,5 @@
 import { MovieApi } from "../../api";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Pagination from "@material-ui/lab/Pagination";
 
@@ -35,6 +35,17 @@ const Wrapper = styled.div`
     background-color: #fff333;
     color: #353535;
   }
+
+  ${(props) => (props.adaptive ? props.adaptive : null)}
+`;
+
+const adaptive = css`
+  @media only screen and (max-width: 390px) {
+    & button {
+      width: 32px;
+      height: 32px;
+    }
+  }
 `;
 
 export const Footer = ({
@@ -49,7 +60,6 @@ export const Footer = ({
 
   const changeHandler = (e) => {
     const page = +e.target.innerText;
-
     setCurrentPage(page);
     setFetching(true);
     MovieApi.getListOfMovies(limitElements, page)
@@ -62,7 +72,7 @@ export const Footer = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper adaptive={adaptive}>
       <Pagination
         count={pagesCount}
         page={currentPage}

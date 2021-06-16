@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  padding-left: 30px;
+  padding: 0px 30px;
   color: #fff;
 `;
 
@@ -21,23 +21,26 @@ const FilmContainerWrapper = styled.div`
 const FilmContainer = styled.div``;
 
 export const Body = ({ isFetching, moviesData, movieCount }) => {
+  const getMovieCount = () =>
+    movieCount !== null ? `There are ${movieCount} movies.` : null;
+  const getMovieItems = () =>
+    moviesData.length !== 0
+      ? moviesData.movies.map((e, index) => (
+          <MovieItem key={`movie-item_${index}`} movieData={e} />
+        ))
+      : null;
+
   return (
     <Wrapper>
       <Title>
         All movies. &nbsp;
-        {movieCount !== null ? `There are ${movieCount} movies.` : null}
+        {getMovieCount()}
       </Title>
       <FilmContainerWrapper>
         {isFetching ? (
           <Preloader />
         ) : (
-          <FilmContainer>
-            {moviesData.length !== 0
-              ? moviesData.movies.map((e, index) => (
-                  <MovieItem key={`movie-item_${index}`} movieData={e} />
-                ))
-              : null}
-          </FilmContainer>
+          <FilmContainer>{getMovieItems()}</FilmContainer>
         )}
       </FilmContainerWrapper>
     </Wrapper>
