@@ -13,6 +13,7 @@ const Wrapper = styled.div`
 const App = () => {
   const [moviesData, setMoviesData] = useState([]);
   const [isFetching, setFetching] = useState(false);
+  const [isError, setError] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
   const [limitElements] = useState(24);
 
@@ -24,7 +25,10 @@ const App = () => {
           setMoviesData(data.data);
           setFetching(false);
         })
-        .catch((e) => setFetching(false))
+        .catch((e) => {
+          setFetching(false)
+          setError(true)
+        })
         .finally(() => setFetching(false));
     };
     getData();
@@ -38,6 +42,7 @@ const App = () => {
         isFetching={isFetching}
         movieCount={moviesData.movie_count || null}
         moviesData={moviesData}
+        isError={isError}
       />
       <Footer
         movieCount={moviesData.movie_count || null}

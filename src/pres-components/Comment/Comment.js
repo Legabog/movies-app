@@ -34,11 +34,6 @@ const Svg = styled.svg.attrs({
 
 export const Comment = ({ text, index, setComments, commnets }) => {
   const deleteIconHandler = () => {
-    console.log(
-      commnets
-        .slice(0, index - 1)
-        .concat(commnets.slice(index, commnets.length))
-    );
     setComments(
       commnets
         .slice(0, index - 1)

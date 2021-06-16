@@ -1,14 +1,10 @@
 import styled from "styled-components";
 
 import { Preloader, MovieItem } from "../../pres-components";
+import { BodyTitle } from "./components";
 
 const Wrapper = styled.div`
   width: 100%;
-`;
-
-const Title = styled.h2`
-  padding: 0px 30px;
-  color: #fff;
 `;
 
 const FilmContainerWrapper = styled.div`
@@ -20,9 +16,25 @@ const FilmContainerWrapper = styled.div`
 
 const FilmContainer = styled.div``;
 
-export const Body = ({ isFetching, moviesData, movieCount }) => {
-  const getMovieCount = () =>
-    movieCount !== null ? `There are ${movieCount} movies.` : null;
+const ErrorCointainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Error = styled.span`
+  color: red;
+  font-size: 30px;
+`;
+
+export const Body = ({ isFetching, moviesData, movieCount, isError }) => {
+  const getError = () =>
+    isError ? (
+      <ErrorCointainer>
+        <Error>Opps, something went wrong...</Error>
+      </ErrorCointainer>
+    ) : null;
   const getMovieItems = () =>
     moviesData.length !== 0
       ? moviesData.movies.map((e, index) => (
@@ -32,10 +44,8 @@ export const Body = ({ isFetching, moviesData, movieCount }) => {
 
   return (
     <Wrapper>
-      <Title>
-        All movies. &nbsp;
-        {getMovieCount()}
-      </Title>
+      <BodyTitle movieCount={movieCount} />
+      {getError()}
       <FilmContainerWrapper>
         {isFetching ? (
           <Preloader />
